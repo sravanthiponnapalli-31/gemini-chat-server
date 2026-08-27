@@ -60,16 +60,24 @@ app.post("/api/chat", async (req, res) => {
   //   });
   console.timeEnd("Gemini response time");
 
-if (!response) {
-  throw new Error("Gemini returned an empty response");
+
+  if (!response) {
+  throw new Error("Gemini returned no response");
 }
 
-console.log("Gemini raw response:", response);
+console.log("Gemini raw response:", JSON.stringify(response));
 
-const reply =
-  response.text ||
-  response.candidates?.[0]?.content?.parts?.[0]?.text ||
-  "Sorry, I couldn't generate a response.";
+const reply = response.text;
+
+if (!reply) {
+  throw new Error("Gemini returned no text");
+}
+
+console.log("AI response:", reply);
+
+res.json({
+  reply,
+});
 
 console.log("AI response:", reply);
 
