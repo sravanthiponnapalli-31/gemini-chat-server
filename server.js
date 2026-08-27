@@ -58,10 +58,10 @@ app.post("/api/chat", async (req, res) => {
   //   res.json({
   //     reply,
   //   });
+ 
   console.timeEnd("Gemini response time");
 
-
-  if (!response) {
+if (!response) {
   throw new Error("Gemini returned no response");
 }
 
@@ -72,12 +72,6 @@ const reply = response.text;
 if (!reply) {
   throw new Error("Gemini returned no text");
 }
-
-console.log("AI response:", reply);
-
-res.json({
-  reply,
-});
 
 console.log("AI response:", reply);
 
