@@ -25,16 +25,16 @@ app.post("/api/chat", async (req, res) => {
       });
     }
 
+    
     console.log("User message:", message);
+      console.time("Gemini response time");
 
-    const response = await ai.models.generateContent({
-      
+const response = await ai.models.generateContent({
+  
       model: "gemini-3.6-flash",
-      
-      
-      contents: message,
+       contents: message,
     });
-
+   console.timeEnd("Gemini response time");
     const reply = response.text;
 
     console.log("AI response:", reply);
