@@ -49,14 +49,33 @@ app.post("/api/chat", async (req, res) => {
     await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
   }
 }
-   console.timeEnd("Gemini response time");
-    const reply = response.text();
+  //  console.timeEnd("Gemini response time");
+  //   // const reply = response.text();
+  //   const reply = response?.text || "Sorry, I couldn't generate a response.";
 
-    console.log("AI response:", reply);
+  //   console.log("AI response:", reply);
 
-    res.json({
-      reply,
-    });
+  //   res.json({
+  //     reply,
+  //   });
+  console.timeEnd("Gemini response time");
+
+if (!response) {
+  throw new Error("Gemini returned an empty response");
+}
+
+console.log("Gemini raw response:", response);
+
+const reply =
+  response.text ||
+  response.candidates?.[0]?.content?.parts?.[0]?.text ||
+  "Sorry, I couldn't generate a response.";
+
+console.log("AI response:", reply);
+
+res.json({
+  reply,
+});
   } catch (error) {
     console.error("Gemini API error:", error);
 
