@@ -28,12 +28,26 @@ app.post("/api/chat", async (req, res) => {
     
     console.log("User message:", message);
       console.time("Gemini response time");
+    let response;
 
-const response = await ai.models.generateContent({
+   for (let attempt = 1; attempt <= 3; attempt++) {
+  try {
+   const response = await ai.models.generateContent({
   
       model: "gemini-3.6-flash",
        contents: message,
     });
+      break;
+  } catch (error) {
+    console.error(`Gemini attempt ${attempt} failed:`, error);
+
+    if (attempt === 3) {
+      throw error;
+    }
+
+    await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
+  }
+}
    console.timeEnd("Gemini response time");
     const reply = response.text;
 
