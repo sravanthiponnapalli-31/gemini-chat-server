@@ -27,6 +27,7 @@ app.post("/api/chat", async (req, res) => {
 
     
     console.log("User message:", message);
+    
       console.time("Gemini response time");
     let response;
 
@@ -49,7 +50,7 @@ app.post("/api/chat", async (req, res) => {
   }
 }
    console.timeEnd("Gemini response time");
-    const reply = response.text;
+    const reply = response.text();
 
     console.log("AI response:", reply);
 
